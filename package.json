@@ -9,12 +9,14 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.8",
     "@types/express": "^4.17.8",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/morgan": "^1.9.2",
     "@types/node-fetch": "^2.5.7",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
