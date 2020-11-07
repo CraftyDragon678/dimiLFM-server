@@ -2,6 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import router from './routes';
+import { IError } from './types/error';
 
 const app = express();
 

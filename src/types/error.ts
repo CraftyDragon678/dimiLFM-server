@@ -1,4 +1,4 @@
-interface IError extends Error {
+export interface IError extends Error {
   type?: string;
   status?: number;
   data?: any;
