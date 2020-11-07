@@ -1,4 +1,5 @@
 export interface IIdentity {
+  // eslint-disable-next-line camelcase
   user_type: 'S' | 'T' | 'D' | 'G' | 'P';
   email: string;
   name: string;
