@@ -1,0 +1,8 @@
+{
+  "mongodb": {
+    "host": "",
+    "port": 27017,
+    "name": "",
+    "password": ""
+  }
+}
