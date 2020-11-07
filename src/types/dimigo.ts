@@ -10,4 +10,4 @@ export interface IIdentity {
   grade: number;
   number: number;
   serial: number;
-};
+}
