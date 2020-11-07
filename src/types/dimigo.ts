@@ -1,4 +1,4 @@
-interface IIdentity {
+export interface IIdentity {
   user_type: 'S' | 'T' | 'D' | 'G' | 'P';
   email: string;
   name: string;

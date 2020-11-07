@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import jwt from 'jsonwebtoken';
+import { IIdentity } from '../types/dimigo';
 
 const loginAsDimigoIn = async (id: string, password: string) => {
   const { token }: { token: string } = await (await fetch('https://dev-api.dimigo.in/auth/', {
