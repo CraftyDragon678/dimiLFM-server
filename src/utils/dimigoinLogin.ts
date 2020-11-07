@@ -9,7 +9,8 @@ const loginAsDimigoIn = async (id: string, password: string) => {
       'content-type': 'application/json',
     },
   })).json();
-  return jwt.decode(token)?.identity[0];
+  const payload = jwt.decode(token) as { identity: IIdentity[] };
+  return payload.identity[0];
 }
 
 export default loginAsDimigoIn;
