@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "dev": "nodemon --watch 'src/**/*' --exec 'ts-node ./src/index.ts'"
+    "dev": "nodemon --watch 'src/**/*' -e '*' --exec 'ts-node ./src/index.ts'"
   },
   "dependencies": {
     "cors": "^2.8.5",
