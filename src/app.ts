@@ -8,10 +8,11 @@ const app = express();
 
 morgan.token(
   'remote-addr',
-  req =>
-    (req.headers['x-real-ip'] as string) ||
-    (req.headers['x-forwarded-for'] as string) ||
-    (req.connection.remoteAddress as string),
+  (req) => (
+    (req.headers['x-real-ip'] as string)
+    || (req.headers['x-forwarded-for'] as string)
+    || (req.connection.remoteAddress as string)
+  ),
 );
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]'));
 app.use(cors());
