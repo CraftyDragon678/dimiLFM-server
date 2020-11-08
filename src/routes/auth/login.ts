@@ -19,7 +19,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
 
   if (user) {
     if (user.verifyPassword(password)) {
-      const token = jwt.sign({ uid: id, serial: user.serial }, jwtSecret);
+      const token = jwt.sign({ oid: user.oid }, jwtSecret);
       return res.json({ token });
     }
     return res.status(401).json({
@@ -42,7 +42,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
   Users.createUser({
     email, name, serial, type, oid, password, uid: id,
   });
-  const token = jwt.sign({ uid: id, serial }, jwtSecret);
+  const token = jwt.sign({ oid }, jwtSecret);
 
   return res.json({ token });
 }));
