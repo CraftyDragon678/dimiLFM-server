@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import router from './routes';
@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use('/', router);
 
-app.use((err: IError, req: Request, res: Response) => {
+app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
   if (err.type === 'entity.parse.failed') {
     res.send({ success: false, code: 400, msg: 'Invalid json type' });
   } else {
