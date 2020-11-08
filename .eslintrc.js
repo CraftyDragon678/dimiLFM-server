@@ -28,6 +28,10 @@ module.exports = {
       'error',
       { argsIgnorePattern: 'next' },
     ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { argsIgnorePattern: 'next' },
+    ],
   },
   settings: {
     'import/resolver': {
