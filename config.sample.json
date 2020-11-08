@@ -7,5 +7,7 @@
     "db": "",
     "authSource": ""
   },
-  "jwtSecret": ""
+  "jwtSecret": "",
+  "webPort": 8080,
+  "wsPort": 8081
 }
