@@ -45,7 +45,7 @@ userSchema.pre<IUser>('save', function savePreHook(next) {
 });
 
 userSchema.methods.verifyPassword = function verify(password: string): boolean {
-  const [encrypted, salt] = password.split('|');
+  const [encrypted, salt] = this.password.split('|');
   return encrypted === pbkdf2Sync(password, salt, 200000, 64, 'sha512').toString('base64');
 };
 
