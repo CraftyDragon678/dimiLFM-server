@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import router from './routes';
 import { IError } from './types/error';
 
@@ -15,7 +16,7 @@ morgan.token(
   ),
 );
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]'));
-app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 
 app.use('/', router);
