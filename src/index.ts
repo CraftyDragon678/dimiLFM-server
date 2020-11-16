@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import app from './app';
-import { mongodb as mongoConf } from '../config.json';
+import { mongodb as mongoConf, webPort } from '../config.json';
 
 mongoose.connect(
   'mongodb://'
@@ -13,4 +13,4 @@ mongoose.connect(
   },
 );
 
-app.listen(8080);
+app.listen(webPort, () => { console.log('WEB: READY'); });
