@@ -16,6 +16,9 @@ morgan.token(
   ),
 );
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]'));
+app.use(cors({
+  credentials: true,
+}));
 app.use(cookieParser());
 app.use(express.json());
 
