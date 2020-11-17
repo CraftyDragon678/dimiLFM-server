@@ -17,6 +17,10 @@ morgan.token(
 );
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]'));
 app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://cragon.kro.kr:3000',
+  ],
   credentials: true,
 }));
 app.use(cookieParser());
@@ -26,7 +30,7 @@ app.use('/', router);
 
 app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
   if (err.type === 'entity.parse.failed') {
-    res.send({ success: false, code: 400, msg: 'Invalid json type' });
+    res.json({ success: false, code: 400, msg: 'Invalid json type' });
   } else {
     // eslint-disable-next-line no-console
     console.error(err.stack);
