@@ -10,8 +10,7 @@ const app = express();
 app.use(morgan);
 app.use(cors({
   origin: [
-    'http://localhost:3000',
-    'http://cragon.kro.kr:3000',
+    'https://cragon.kro.kr:3000',
   ],
   credentials: true,
 }));
