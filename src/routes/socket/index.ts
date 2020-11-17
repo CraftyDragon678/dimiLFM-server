@@ -12,7 +12,7 @@ export const sendTo = (ws: WebSocket | number, msg: string): void => {
   if (ws instanceof WebSocket) {
     [...clients.values()].find((e) => e.socket === ws)?.socket.send(msg);
   } else {
-    [...clients.values()].find((e) => e.id === ws)?.socket.send(msg);
+    [...clients.values()].filter((e) => e.id === ws).map(({ socket }) => socket.send(msg));
   }
 };
 
