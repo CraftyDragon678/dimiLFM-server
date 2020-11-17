@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
+import path from 'path';
+import fs from 'fs';
 import http from 'http';
+import https from 'https';
 import app from './app';
-import { mongodb as mongoConf, webPort } from '../config.json';
+import {
+  mongodb as mongoConf, webPort, isHttps, cert, key,
+} from '../config.json';
 
 mongoose.connect(
   'mongodb://'
@@ -14,6 +19,15 @@ mongoose.connect(
   },
 );
 
-http.createServer(app).listen(webPort, () => {
-  console.log('WEB: READY');
-});
+if (isHttps) {
+  https.createServer({
+    cert: fs.readFileSync(path.resolve(cert)),
+    key: fs.readFileSync(path.resolve(key)),
+  }, app).listen(webPort, () => {
+    console.log('WEB: HTTPS READY');
+  });
+} else {
+  http.createServer(app).listen(webPort, () => {
+    console.log('WEB: HTTP READY');
+  });
+}
