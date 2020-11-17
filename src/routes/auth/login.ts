@@ -20,7 +20,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
   if (user) {
     if (user.verifyPassword(password)) {
       const token = jwt.sign({ oid: user.oid }, jwtSecret);
-      return res.json({ token });
+      return res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(204).send();
     }
     return res.status(401).json({
       message: '아이디 또는 패스워드가 잘못되었습니다.',
@@ -44,7 +44,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
   });
   const token = jwt.sign({ oid }, jwtSecret);
 
-  return res.json({ token });
+  return res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(204).send();
 }));
 
 export default router;
