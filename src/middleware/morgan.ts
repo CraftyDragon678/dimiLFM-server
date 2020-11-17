@@ -10,15 +10,14 @@ const colors = {
   endColor: '\x1B[0m',
 };
 
-morgan.token(
+export default morgan.token<Request, Response>(
   'remote-addr',
   (req) => (
     (req.headers['x-real-ip'] as string)
     || (req.headers['x-forwarded-for'] as string)
     || (req.connection.remoteAddress as string)
   ),
-);
-morgan.token(
+).token(
   'method',
   (req) => {
     const color = (
@@ -30,8 +29,7 @@ morgan.token(
     );
     return `${color}${req.method}${colors.endColor}`;
   },
-);
-morgan.token(
+).token(
   'status',
   (_, res) => {
     const color = (
@@ -43,12 +41,9 @@ morgan.token(
     );
     return `${color}${res.statusCode}${colors.endColor}`;
   },
-);
-morgan.token<Request, Response>(
+).token(
   'userid',
   (req) => req.auth?.oid.toString(),
-);
-
-export default morgan(
+)(
   ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :response-time ms :res[content-length] :userid',
 );
