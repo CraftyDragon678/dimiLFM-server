@@ -1,21 +1,13 @@
 import express, { NextFunction, Request, Response } from 'express';
-import morgan from 'morgan';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import router from './routes';
 import { IError } from './types/error';
+import morgan from './middleware/morgan';
 
 const app = express();
 
-morgan.token(
-  'remote-addr',
-  (req) => (
-    (req.headers['x-real-ip'] as string)
-    || (req.headers['x-forwarded-for'] as string)
-    || (req.connection.remoteAddress as string)
-  ),
-);
-app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length]'));
+app.use(morgan);
 app.use(cors({
   origin: [
     'http://localhost:3000',
