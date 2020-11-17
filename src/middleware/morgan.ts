@@ -1,4 +1,4 @@
-
+import { Request, Response } from 'express';
 import morgan from 'morgan';
 
 const colors = {
@@ -44,7 +44,11 @@ morgan.token(
     return `${color}${res.statusCode}${colors.endColor}`;
   },
 );
+morgan.token<Request, Response>(
+  'userid',
+  (req) => req.auth?.oid.toString(),
+);
 
 export default morgan(
-  ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :response-time ms :res[content-length]',
+  ':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :response-time ms :res[content-length] :userid',
 );
