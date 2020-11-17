@@ -9,5 +9,7 @@
   },
   "jwtSecret": "",
   "webPort": 8080,
-  "wsPort": 8081
+  "isHttps": false,
+  "cert": "",
+  "key": ""
 }
