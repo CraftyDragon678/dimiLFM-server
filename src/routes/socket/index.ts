@@ -10,7 +10,7 @@ const wss = new WebSocket.Server({ noServer: true });
 
 const clients = new Set<ISocket>();
 
-export const sendTo = (ws: WebSocket | number, msg: string): void => {
+export const sendTo = (ws: WebSocket | number, msg: any): void => {
   if (ws instanceof WebSocket) {
     [...clients.values()].find((e) => e.socket === ws)?.socket.send(msg);
   } else {
@@ -18,8 +18,18 @@ export const sendTo = (ws: WebSocket | number, msg: string): void => {
   }
 };
 
-function onSocketConnect(id: number) {
-  return (_ws: WebSocket) => {
+export const sendToAll = (msg: any): void => {
+  [...clients.values()].forEach((e) => e.socket.send(msg));
+}
+
+export const sendOthers = (ws: WebSocket | number, msg: any): void => {
+  if (ws instanceof WebSocket) {
+    [...clients.values()].filter((e) => e.socket !== ws).map(({ socket }) => socket.send(msg));
+  } else {
+    [...clients.values()].filter((e) => e.id !== ws).map(({ socket }) => socket.send(msg));
+  }
+}
+
     const ws: ISocket = {
       id,
       socket: _ws,
