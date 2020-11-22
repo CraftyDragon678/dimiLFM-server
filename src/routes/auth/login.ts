@@ -3,7 +3,7 @@ import expressAsyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import Users from '../../models/userModel';
 import loginAsDimigoIn from '../../utils/dimigoinLogin';
-import { jwtSecret } from '../../../config.json';
+import { jwtSecret, jwtExpires } from '../../../config.json';
 
 const router = Router();
 
@@ -19,7 +19,9 @@ router.post('/', expressAsyncHandler(async (req, res) => {
 
   if (user) {
     if (user.verifyPassword(password)) {
-      const token = jwt.sign({ oid: user.oid }, jwtSecret);
+      const token = jwt.sign({ oid: user.oid }, jwtSecret, {
+        expiresIn: jwtExpires,
+      });
       return res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(204).send();
     }
     return res.status(401).json({
