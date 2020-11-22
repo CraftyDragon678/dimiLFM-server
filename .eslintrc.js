@@ -32,6 +32,10 @@ module.exports = {
       'error',
       { argsIgnorePattern: 'next' },
     ],
+    'no-underscore-dangle': [
+      'error',
+      { allow: '_id' },
+    ]
   },
   settings: {
     'import/resolver': {
