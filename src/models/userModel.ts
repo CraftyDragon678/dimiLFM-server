@@ -2,17 +2,17 @@ import mongoose, { Document, Model, Schema } from 'mongoose';
 import { randomBytes, pbkdf2Sync } from 'crypto';
 
 export interface IUserPayload {
+  _id: number;
   uid: string;
   password: string;
   name: string;
   email: string;
-  oid: number;
   serial: number;
   type: string;
 }
 
 export interface IUser extends IUserPayload, Document {
-  id: string;
+  _id: number;
   createdAt: Date;
   verifyPassword: (password: string) => boolean;
 }
@@ -22,11 +22,11 @@ export interface IUserModel extends Model<IUser> {
 }
 
 const userSchema = new Schema<IUser>({
+  _id: { type: Number, required: true },
   uid: { type: String, required: true },
   password: { type: String, required: true },
   name: { type: String, required: true },
   email: { type: String, required: true },
-  oid: { type: Number, required: true },
   serial: { type: Number },
   type: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },

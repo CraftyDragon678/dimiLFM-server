@@ -19,7 +19,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
 
   if (user) {
     if (user.verifyPassword(password)) {
-      const token = jwt.sign({ oid: user.oid }, jwtSecret, {
+      const token = jwt.sign({ oid: user._id }, jwtSecret, {
         expiresIn: jwtExpires,
       });
       return res.cookie('token', token, { httpOnly: true, sameSite: 'none', secure: true }).status(204).send();
@@ -42,7 +42,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
   } = identity;
 
   Users.createUser({
-    email, name, serial, type, oid, password, uid: id,
+    email, name, serial, type, _id: oid, password, uid: id,
   });
   const token = jwt.sign({ oid }, jwtSecret);
 
