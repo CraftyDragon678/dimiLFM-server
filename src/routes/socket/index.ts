@@ -1,5 +1,7 @@
 import { Router } from 'express';
+import expressAsyncHandler from 'express-async-handler';
 import WebSocket from 'ws';
+import * as redisClient from '../../redis';
 import { ISocket } from '../../types/socket';
 
 const router = Router();
@@ -33,13 +35,18 @@ function onSocketConnect(id: number) {
   };
 }
 
-// TODO 굳이 8080 포트 아니여도 되는데,,
-// 상관은 없따
-router.get('/', (req) => {
-  // 30초 짜리 토큰 처리
-
-  console.log("socket in");
-  wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect(2555));
-});
+router.get('/', expressAsyncHandler(async (req, res) => {
+  const { oid, token } = req.query;
+  const data = await redisClient.hgetall(`socket/${oid}`);
+  if (new Date().getTime() > +data.exp) {
+    res.status(401).send();
+    return;
+  }
+  if (data.token === token) {
+    wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect(2555));
+    return;
+  }
+  res.status(401).send();
+}));
 
 export default router;

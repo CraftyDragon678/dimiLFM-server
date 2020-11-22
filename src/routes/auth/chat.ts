@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import crypto from 'crypto';
-import redisClient from '../../redis';
+import redis from '../../redis';
 
 const router = Router();
 
@@ -12,8 +12,11 @@ router.get('/', expressAsyncHandler(async (req, res) => {
 
   const token = crypto.randomBytes(64).toString('base64');
 
-  redisClient.hmset(`socket/${req.auth.oid}`, 'token', token, 'expire', now.getTime());
-  res.json({ token, exp: now.getTime() });
+  redis.hmset(`socket/${req.auth.oid}`, {
+    token,
+    exp: now.getTime(),
+  });
+  res.json({ token, exp: now.getTime(), oid: req.auth.oid });
 }));
 
 export default router;
