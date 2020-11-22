@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import WebSocket from 'ws';
+import Users from '../../models/userModel';
 import * as redisClient from '../../redis';
 import { ISocket } from '../../types/socket';
 
@@ -30,15 +31,18 @@ export const sendOthers = (ws: WebSocket | number, msg: any): void => {
   }
 }
 
+function onSocketConnect(id: number, name: string) {
+  return async (_ws: WebSocket) => {
     const ws: ISocket = {
       id,
+      name: name,
       socket: _ws,
     };
 
     clients.add(ws);
 
     ws.socket.on('message', (msg) => {
-      console.log(`MSG: ${msg}`);
+      sendToAll(`${ws.name}: ${msg}`);
     });
 
     ws.socket.on('close', () => clients.delete(ws));
@@ -47,14 +51,18 @@ export const sendOthers = (ws: WebSocket | number, msg: any): void => {
 
 router.get('/', expressAsyncHandler(async (req, res) => {
   const { oid, token } = req.query;
+  if (!oid || !token) return res.status(400).send();
   const data = await redisClient.hgetall(`socket/${oid}`);
   if (new Date().getTime() > +data.exp) {
     res.status(401).send();
     return;
   }
   if (data.token === token) {
-    wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect(2555));
-    return;
+    const user = await Users.findById(+oid);
+    if (user) {
+      wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect(+oid, user.name));
+      return;
+    }
   }
   res.status(401).send();
 }));
