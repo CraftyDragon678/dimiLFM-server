@@ -6,12 +6,12 @@ const needAuth = (req: Request, res: Response, next: NextFunction): void => {
   if (req.cookies.token) {
     try {
       req.auth = jwt.verify(req.cookies.token, jwtSecret) as never;
+      next();
     } catch (e) {
       if (e instanceof JsonWebTokenError || e instanceof TokenExpiredError ) {
         res.status(401).send();
       }
     }
-    next();
   } else {
     res.status(401).send();
   }
