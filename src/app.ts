@@ -11,6 +11,7 @@ app.use(morgan);
 app.use(cors({
   origin: [
     'https://cragon.kro.kr:3000',
+    'https://172.19.3.24:3000',
   ],
   credentials: true,
 }));
