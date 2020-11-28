@@ -19,7 +19,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
     radioIndex,
     user: req.auth.oid,
   });
-  res.json({ _id: result._id });
+  return res.json({ _id: result._id });
 }));
 
 export default router;
