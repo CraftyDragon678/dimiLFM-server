@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import needAuth from '../../middleware/needAuth';
 import found from './found';
+import lost from './lost';
 
 const router = Router();
 
-router.use('/found', needAuth, found);
+router.use('/found', found);
+router.use('/found', lost);
 
 export default router;
