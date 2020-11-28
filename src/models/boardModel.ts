@@ -53,7 +53,7 @@ const foundSchema = new Schema({
   from: { type: Date, required: true },
   to: { type: Date, required: true },
   foundLocation: { type: String, required: true },
-  wantLocation: { type: String, required: true },
+  wantLocation: { type: String },
   radioIndex: { type: Number, required: true },
   user: { type: Number, ref: 'user' },
 }, { versionKey: false, timestamps: true });
