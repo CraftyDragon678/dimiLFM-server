@@ -14,8 +14,8 @@ export interface IFoundPayload extends IBoard {
 }
 
 export interface ILostPayload extends IBoard {
-  foundDate: Date[];
-  foundLocation: string;
+  lostDate: Date[];
+  lostLocation: string;
 }
 
 export interface IMarketPayload extends IBoard {
