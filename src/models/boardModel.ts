@@ -19,8 +19,8 @@ export interface ILostPayload extends IBoard {
 }
 
 export interface IMarketPayload extends IBoard {
-  beforePrice: bigint;
-  afterPrice: bigint;
+  beforePrice: number;
+  afterPrice: number;
   stars: number;
 }
 
@@ -41,8 +41,8 @@ export interface ILost extends IBoard, Document {
 }
 
 export interface IMarket extends IBoard, Document {
-  beforePrice: string;
-  afterPrice: string;
+  beforePrice: number;
+  afterPrice: number;
   stars: number;
   user: number | IUser;
 }
@@ -70,8 +70,8 @@ const lostSchema = new Schema({
 const marketSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
-  beforePrice: { type: String, required: true },
-  afterPrice: { type: String, required: true },
+  beforePrice: { type: Number, required: true },
+  afterPrice: { type: Number, required: true },
   stars: { type: Number, required: true },
   user: { type: Number, ref: 'user' },
 }, { versionKey: false, timestamps: true });
