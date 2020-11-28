@@ -21,7 +21,7 @@ export const sendTo = (ws: WebSocket | number, msg: any): void => {
 
 export const sendToAll = (msg: any): void => {
   [...clients.values()].forEach((e) => e.socket.send(msg));
-}
+};
 
 export const sendOthers = (ws: WebSocket | number, msg: any): void => {
   if (ws instanceof WebSocket) {
@@ -29,13 +29,13 @@ export const sendOthers = (ws: WebSocket | number, msg: any): void => {
   } else {
     [...clients.values()].filter((e) => e.id !== ws).map(({ socket }) => socket.send(msg));
   }
-}
+};
 
 function onSocketConnect(id: number, name: string) {
   return async (_ws: WebSocket) => {
     const ws: ISocket = {
       id,
-      name: name,
+      name,
       socket: _ws,
     };
 
@@ -54,17 +54,15 @@ router.get('/', expressAsyncHandler(async (req, res) => {
   if (!oid || !token) return res.status(400).send();
   const data = await redisClient.hgetall(`socket/${oid}`);
   if (new Date().getTime() > +data.exp) {
-    res.status(401).send();
-    return;
+    return res.status(401).json({ message: 'token has been expired' });
   }
-  if (data.token === token) {
-    const user = await Users.findById(+oid);
-    if (user) {
-      wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect(+oid, user.name));
-      return;
-    }
+  if (data.token !== token) {
+    return res.status(401).json({ message: 'incorrect token' });
   }
-  res.status(401).send();
+  const user = await Users.findById(+oid);
+  if (user) {
+    wss.handleUpgrade(req, req.socket, Buffer.alloc(0), onSocketConnect(+oid, user.name));
+  }
 }));
 
 export default router;
