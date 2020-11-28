@@ -28,6 +28,7 @@ export interface IFound extends IBoard, Document {
   from: Date;
   to: Date;
   foundLocation: string;
+  radioIndex: number;
   wantLocation: string;
   user: number | IUser;
 }
@@ -53,6 +54,7 @@ const foundSchema = new Schema({
   to: { type: Date, required: true },
   foundLocation: { type: String, required: true },
   wantLocation: { type: String, required: true },
+  radioIndex: { type: Number, required: true },
   user: { type: Number, ref: 'user' },
 }, { versionKey: false, timestamps: true });
 
