@@ -1,8 +1,26 @@
-import mongoose, { Document, Model, Schema, Types } from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
 interface IBoard {
   title: string;
   content: string;
+}
+
+export interface IFoundPayload extends IBoard {
+  foundDate: Date[];
+  radioIndex: number;
+  foundLocation: string;
+  wantLocation: string;
+}
+
+export interface ILostPayload extends IBoard {
+  foundDate: Date[];
+  foundLocation: string;
+}
+
+export interface IMarketPayload extends IBoard {
+  beforePrice: bigint;
+  afterPrice: bigint;
+  stars: number;
 }
 
 export interface IFound extends IBoard, Document {
