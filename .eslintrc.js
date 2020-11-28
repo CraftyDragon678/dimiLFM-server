@@ -34,8 +34,8 @@ module.exports = {
     ],
     'no-underscore-dangle': [
       'error',
-      { allow: '_id' },
-    ]
+      { allow: ['_id'] },
+    ],
   },
   settings: {
     'import/resolver': {
