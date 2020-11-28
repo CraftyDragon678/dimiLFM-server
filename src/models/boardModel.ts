@@ -31,7 +31,7 @@ const foundSchema = new Schema({
   to: { type: Date, required: true },
   foundLocation: { type: String, required: true },
   wantLocation: { type: String, required: true },
-});
+}, { versionKey: false, timestamps: true });
 
 const lostSchema = new Schema({
   title: { type: String, required: true },
@@ -39,7 +39,7 @@ const lostSchema = new Schema({
   from: { type: Date, required: true },
   to: { type: Date, required: true },
   lostLocation: { type: String, required: true },
-});
+}, { versionKey: false, timestamps: true });
 
 const marketSchema = new Schema({
   title: { type: String, required: true },
@@ -47,7 +47,7 @@ const marketSchema = new Schema({
   beforePrice: { type: String, required: true },
   afterPrice: { type: String, required: true },
   stars: { type: Number, required: true },
-});
+}, { versionKey: false, timestamps: true });
 
 export const Founds = mongoose.model<IFound>('found', foundSchema);
 export const Losts = mongoose.model<ILost>('lost', lostSchema);

@@ -29,8 +29,7 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   serial: { type: Number },
   type: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+}, { versionKey: false, timestamps: true });
 
 userSchema.pre<IUser>('save', function savePreHook(next) {
   if (!this.isModified('password')) {
