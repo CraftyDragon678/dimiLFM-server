@@ -11,7 +11,7 @@ const wss = new WebSocket.Server({ noServer: true });
 
 const clients = new Set<ISocket>();
 
-export const sendTo = (ws: WebSocket | number, msg: any): void => {
+export const sendTo = (ws: WebSocket | number, msg: unknown): void => {
   if (ws instanceof WebSocket) {
     [...clients.values()].find((e) => e.socket === ws)?.socket.send(msg);
   } else {
@@ -19,11 +19,11 @@ export const sendTo = (ws: WebSocket | number, msg: any): void => {
   }
 };
 
-export const sendToAll = (msg: any): void => {
+export const sendToAll = (msg: unknown): void => {
   [...clients.values()].forEach((e) => e.socket.send(msg));
 };
 
-export const sendOthers = (ws: WebSocket | number, msg: any): void => {
+export const sendToOthers = (ws: WebSocket | number, msg: unknown): void => {
   if (ws instanceof WebSocket) {
     [...clients.values()].filter((e) => e.socket !== ws).map(({ socket }) => socket.send(msg));
   } else {
