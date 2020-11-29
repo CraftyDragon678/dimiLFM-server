@@ -66,10 +66,16 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
       },
     ],
   }).sort({ createdAt: old ? 1 : -1 })
-    .select('title user done createdAt')
-    .populate('user', '-_id serial name');
+    .select('title user done createdAt content')
+    .populate('user', '-_id serial name')
+    .lean();
 
-  return res.json({ data: result });
+  return res.json({
+    data: result.map(({ content, ...e }) => ({
+      ...e,
+      image: content.match(/src="(.*?)"/)?.[1],
+    })),
+  });
 }));
 
 export default router;
