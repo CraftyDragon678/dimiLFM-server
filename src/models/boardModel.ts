@@ -54,7 +54,7 @@ const foundSchema = new Schema({
   foundLocation: { type: String, required: true },
   wantLocation: { type: String },
   radioIndex: { type: Number, required: true },
-  done: { type: Boolean, required: true },
+  done: { type: Boolean, default: false },
   tag: { type: String, required: true },
   user: { type: Number, ref: 'user' },
 }, { versionKey: false, timestamps: true });
@@ -65,7 +65,7 @@ const lostSchema = new Schema({
   from: { type: Date, required: true },
   to: { type: Date, required: true },
   lostLocation: { type: String, required: true },
-  done: { type: Boolean, required: true },
+  done: { type: Boolean, default: false },
   tag: { type: String, required: true },
   user: { type: Number, ref: 'user' },
 }, { versionKey: false, timestamps: true });
@@ -76,7 +76,7 @@ const marketSchema = new Schema({
   beforePrice: { type: Number, required: true },
   afterPrice: { type: Number, required: true },
   stars: { type: Number, required: true },
-  done: { type: Boolean, required: true },
+  done: { type: Boolean, default: false },
   tag: { type: String, required: true },
   user: { type: Number, ref: 'user' },
 }, { versionKey: false, timestamps: true });
