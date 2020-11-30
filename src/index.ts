@@ -7,6 +7,7 @@ import app from './app';
 import {
   mongodb as mongoConf, webPort, isHttps, cert, key,
 } from '../config.json';
+import io from './socket';
 
 mongoose.connect(
   'mongodb://'
@@ -19,15 +20,19 @@ mongoose.connect(
   },
 );
 
-if (isHttps) {
-  https.createServer({
-    cert: fs.readFileSync(path.resolve(cert)),
-    key: fs.readFileSync(path.resolve(key)),
-  }, app).listen(webPort, () => {
-    console.log('WEB: HTTPS READY');
-  });
-} else {
-  http.createServer(app).listen(webPort, () => {
-    console.log('WEB: HTTP READY');
-  });
-}
+const server = isHttps
+  ? (
+    https.createServer({
+      cert: fs.readFileSync(path.resolve(cert)),
+      key: fs.readFileSync(path.resolve(key)),
+    }, app).listen(webPort, () => {
+      console.log('WEB: HTTPS READY');
+    })
+  )
+  : (
+    http.createServer(app).listen(webPort, () => {
+      console.log('WEB: HTTP READY');
+    })
+  );
+
+io.attach(server);
