@@ -11,5 +11,6 @@
   "webPort": 8080,
   "isHttps": false,
   "cert": "",
-  "key": ""
+  "key": "",
+  "corsAllow": []
 }
