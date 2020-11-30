@@ -4,15 +4,13 @@ import cookieParser from 'cookie-parser';
 import router from './routes';
 import { IError } from './types/error';
 import morgan from './middleware/morgan';
+import { corsAllow } from '../config.json';
 
 const app = express();
 
 app.use(morgan);
 app.use(cors({
-  origin: [
-    'https://cragon.kro.kr:3000',
-    'https://172.19.3.24:3000',
-  ],
+  origin: corsAllow,
   credentials: true,
 }));
 app.use(cookieParser());
