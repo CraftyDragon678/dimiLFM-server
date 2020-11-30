@@ -19,6 +19,7 @@
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
     "redis": "^3.0.2",
+    "socket.io": "^3.0.3",
     "ws": "^7.4.0"
   },
   "devDependencies": {
