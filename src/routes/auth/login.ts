@@ -38,11 +38,11 @@ router.post('/', expressAsyncHandler(async (req, res) => {
 
   const {
     // eslint-disable-next-line camelcase
-    email, name, serial, user_type: type, idx: oid,
+    email, name, serial, user_type: type, idx: oid, photo,
   } = identity;
 
   Users.createUser({
-    email, name, serial, type, _id: oid, password, uid: id,
+    email, name, serial, type, _id: oid, password, uid: id, profileimage: photo,
   });
   const token = jwt.sign({ oid }, jwtSecret);
 
