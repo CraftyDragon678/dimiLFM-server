@@ -30,7 +30,7 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   serial: { type: Number },
   type: { type: String, required: true },
-  profileimage: { type: String, required: true },
+  profileimage: { type: String },
 }, { versionKey: false, timestamps: true });
 
 userSchema.pre<IUser>('save', function savePreHook(next) {
