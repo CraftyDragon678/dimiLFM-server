@@ -8,16 +8,19 @@ export default {
   listener(msg: { id: string, board: 'found' | 'lost' | 'market' }) {
     (async () => {
       const client = await redis.hgetall(`client/${this.id}`);
-      if (msg.board === 'found') {
-        if (!await Founds.findById(msg.id)) return;
-      } else if (msg.board === 'lost') {
-        if (!await Losts.findById(msg.id)) return;
-      } else if (msg.board === 'market') {
-        if (!await Markets.findById(msg.id)) return;
-      } else return;
+      // eslint-disable-next-line no-nested-ternary
+      const article = msg.board === 'found'
+        ? await Founds.findById(msg.id)
+        : msg.board === 'lost' // eslint-disable-line no-nested-ternary
+          ? await Losts.findById(msg.id)
+          : msg.board === 'market'
+            ? await Markets.findById(msg.id)
+            : null;
+      if (!article) return;
 
       await Chats.create({
         from: client.oid,
+        to: article.user,
         refBoardType: msg.board,
         ref: msg.id,
         messages: [],
