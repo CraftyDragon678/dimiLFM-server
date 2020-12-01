@@ -22,7 +22,7 @@ router.get('/', expressAsyncHandler(async (req, res) => {
       },
     },
   ]);
-  return res.json(result.map((e) => ({ ...e, messages: e.messages[0] })));
+  return res.json(result.map((e) => ({ ...e, lastMessage: e.messages[0] })));
 }));
 
 export default router;
