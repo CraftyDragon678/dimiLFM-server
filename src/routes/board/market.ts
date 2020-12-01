@@ -37,7 +37,6 @@ interface SearchPayload {
   };
   tags: string[];
   dates: Date[];
-  location: string[];
 }
 
 router.post('/search', expressAsyncHandler(async (req, res) => {
@@ -47,7 +46,6 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
     },
     tags,
     dates,
-    location,
   }: SearchPayload = req.body;
 
   const parsedDates = dates.map((e) => new Date(e));
@@ -62,7 +60,6 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
       },
       {
         tag: { $in: tags },
-        ...location.length && { foundLocation: { $in: location } },
         ...my && { user: req.auth.oid },
         $or: [
           { createdAt: { $gte: parsedDates[0], $lte: parsedDates[1] } },
