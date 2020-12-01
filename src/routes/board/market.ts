@@ -70,7 +70,7 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
     ],
   }).sort({ createdAt: old ? 1 : -1 })
     .select('title user done createdAt content')
-    .populate('user', '-_id serial name')
+    .populate('user', '-_id serial name type')
     .lean();
 
   return res.json({

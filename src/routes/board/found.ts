@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { Founds, IFoundPayload } from '../../models/boardModel';
+import { Chats } from '../../models/chatModel';
 
 const router = Router();
 
@@ -67,7 +68,7 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
     ],
   }).sort({ createdAt: old ? 1 : -1 })
     .select('title user done createdAt content')
-    .populate('user', '-_id serial name')
+    .populate('user', '-_id serial name type')
     .lean();
 
   return res.json({
@@ -79,9 +80,13 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
 }));
 
 router.get('/:id', expressAsyncHandler(async (req, res) => {
-  const result = await Founds.findById(req.params.id);
+  const result = await Founds.findById(req.params.id).populate('user').lean();
   if (!result) return res.status(404).json({ message: 'Not Found' });
-  return res.json(result);
+
+  return res.json({
+    ...result,
+    chatRoomExist: !!await Chats.findOne({ from: req.auth.oid, ref: req.params.id }),
+  });
 }));
 
 export default router;
