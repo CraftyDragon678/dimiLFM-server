@@ -78,4 +78,10 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
   });
 }));
 
+router.get('/:id', expressAsyncHandler(async (req, res) => {
+  const result = await Founds.findById(req.params.id).select('-_id').lean();
+  if (!result) return res.status(404).json({ message: 'Not Found' });
+  return res.json(result);
+}));
+
 export default router;
