@@ -80,7 +80,7 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
 }));
 
 router.get('/:id', expressAsyncHandler(async (req, res) => {
-  const result = await Founds.findById(req.params.id).populate('user').lean();
+  const result = await Founds.findById(req.params.id).populate('user', '-_id name serial type profileimage').lean();
   if (!result) return res.status(404).json({ message: 'Not Found' });
 
   return res.json({
