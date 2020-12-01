@@ -36,6 +36,11 @@ io.use((socket, next) => {
     }
     const user = await Users.findById(+oid);
     if (user) {
+      await redisClient.hmset(`client/${socket.id}`, {
+        oid,
+        name: user.name,
+        profile: user.profileimage || '',
+      });
       return next();
     }
     socket.disconnect();
