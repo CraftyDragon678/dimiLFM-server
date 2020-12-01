@@ -24,4 +24,13 @@ export const hgetall = (key: string): Promise<Hash> => (
   })
 );
 
+export const del = (key: string | string[]): Promise<number> => (
+  new Promise((resolve, reject) => {
+    redisClient.del(key, (err, reply) => {
+      if (err) reject(err);
+      else resolve(reply);
+    });
+  })
+);
+
 export default redisClient;
