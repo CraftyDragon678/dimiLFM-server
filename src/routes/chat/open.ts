@@ -21,7 +21,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
         ? await Markets.findById(id)
         : null;
   if (!article) return res.status(404).json({ message: 'Not exist' });
-  if (req.auth.oid === article.user) return res.status(500).json({ message: 'writer and user id must be different' });
+  if (req.auth.oid === article.user) return res.status(400).json({ message: 'writer and user id must be different' });
 
   if (await Chats.findOne({
     from: req.auth.oid,
