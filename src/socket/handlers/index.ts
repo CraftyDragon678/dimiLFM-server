@@ -1,5 +1,4 @@
 import { Socket } from 'socket.io';
-import open from './open';
 import send from './send';
 
 export interface SocketEventHandler {
@@ -9,5 +8,4 @@ export interface SocketEventHandler {
 
 export default [
   send,
-  open,
 ] as SocketEventHandler[];
