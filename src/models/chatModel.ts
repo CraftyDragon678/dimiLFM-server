@@ -19,6 +19,12 @@ interface IChat extends Document {
   messages: string[];
 }
 
+export interface IChatPopulated extends IChat {
+  from: IUser;
+  to: IUser;
+  ref: IFound | ILost | IMarket;
+}
+
 const chatSchema = new Schema({
   from: { type: Number, ref: 'user', required: true },
   to: { type: Number, ref: 'user', required: true },
