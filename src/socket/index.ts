@@ -1,7 +1,8 @@
-import socketio from 'socket.io';
+import socketio, { Socket } from 'socket.io';
 import Users from '../models/userModel';
 import * as redisClient from '../redis';
 import { corsAllow } from '../../config.json';
+import handlers from './handlers';
 
 const io = new socketio.Server({
   serveClient: false,
@@ -48,8 +49,14 @@ io.use((socket, next) => {
   })();
 });
 
-io.on('connection', () => {
-  
+io.on('connection', (socket: Socket) => {
+  handlers.forEach((handler) => {
+    socket.on(handler.event, handler.listener.bind(socket));
+  });
+
+  socket.on('disconnect', () => {
+    redisClient.del(`client${socket.id}`);
+  });
 });
 
 export default io;
