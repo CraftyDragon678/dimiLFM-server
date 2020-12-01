@@ -22,6 +22,6 @@ export const hgetall = (key: string): Promise<Hash> => (
       else resolve(reply);
     });
   })
-)
+);
 
 export default redisClient;
