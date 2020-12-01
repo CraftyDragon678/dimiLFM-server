@@ -7,7 +7,7 @@ export default {
     if (!msg.message.trim()) return;
     (async () => {
       const client = await redis.hgetall(`client/${this.id}`);
-      this.broadcast.emit('message', `${client.name}: ${msg.message}`);
+      this.broadcast.emit('message', `${client.name}: ${msg.message}`, new Date());
       this.emit('send', true);
     })();
   },
