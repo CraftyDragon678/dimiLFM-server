@@ -20,16 +20,16 @@ router.post('/', expressAsyncHandler(async (req, res) => {
       : board === 'market'
         ? await Markets.findById(id)
         : null;
-  if (!article) return res.status(500).json({ message: 'invalid board' });
+  if (!article) return res.status(404).json({ message: 'Not exist' });
 
-  await Chats.create({
+  const result = await Chats.create({
     from: req.auth.oid,
     to: article.user,
     refBoardType: board,
     ref: id,
     messages: [],
   });
-  return res.status(201).json({ message: 'Not exist article' });
+  return res.status(201).json({ _id: result.id, to: result.to });
 }));
 
 export default router;
