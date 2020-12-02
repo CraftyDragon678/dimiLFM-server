@@ -6,6 +6,7 @@ interface IBoard {
   content: string;
   tag: string;
   user: number | IUser;
+  done: boolean;
 }
 
 export interface IFoundPayload extends IBoard {
