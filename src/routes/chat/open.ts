@@ -23,11 +23,17 @@ router.post('/', expressAsyncHandler(async (req, res) => {
   if (!article) return res.status(404).json({ message: 'Not exist' });
   if (req.auth.oid === article.user) return res.status(400).json({ message: 'writer and user id must be different' });
 
-  if (await Chats.findOne({
+  const existData = await Chats.findOne({
     from: req.auth.oid,
     to: article.user,
     ref: id,
-  })) return res.status(409).json({ message: 'Already exist' });
+  });
+  if (existData) {
+    return res.status(409).json({
+      _id: existData._id,
+      message: 'Already exist',
+    });
+  }
   const result = await Chats.create({
     from: req.auth.oid,
     to: article.user,
