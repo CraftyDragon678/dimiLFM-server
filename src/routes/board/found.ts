@@ -101,4 +101,18 @@ router.get('/:id', expressAsyncHandler(async (req, res) => {
   });
 }));
 
+router.put('/:id/done', expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const target = await Founds.findById(id);
+  if (!target) return res.status(404).json({ message: 'Not Found' });
+
+  await Founds.updateOne({ _id: id }, {
+    $set: {
+      done: !target.done,
+    },
+  });
+
+  return res.json({ done: !target.done });
+}));
+
 export default router;
