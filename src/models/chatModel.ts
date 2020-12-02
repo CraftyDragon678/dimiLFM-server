@@ -20,6 +20,8 @@ interface IChat extends Document {
     from: boolean;
     type: string;
     message: string;
+    createdAt?: Date;
+    updatedAt?: Date;
   }[];
 }
 
