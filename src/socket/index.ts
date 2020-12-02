@@ -3,6 +3,7 @@ import Users from '../models/userModel';
 import * as redisClient from '../redis';
 import { corsAllow } from '../../config.json';
 import handlers from './handlers';
+import * as clients from './clients';
 
 const io = new socketio.Server({
   serveClient: false,
@@ -37,11 +38,7 @@ io.use((socket, next) => {
     }
     const user = await Users.findById(+oid);
     if (user) {
-      await redisClient.hmset(`client/${socket.id}`, {
-        oid,
-        name: user.name,
-        profile: user.profileimage || '',
-      });
+      clients.add(socket, +oid);
       return next();
     }
     socket.disconnect();
@@ -55,7 +52,7 @@ io.on('connection', (socket: Socket) => {
   });
 
   socket.on('disconnect', () => {
-    redisClient.del(`client${socket.id}`);
+    clients.del(socket.id);
   });
 });
 
