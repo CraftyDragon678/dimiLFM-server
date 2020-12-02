@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { Founds, IFoundPayload } from '../../models/boardModel';
+import { Founds, IFoundPayload, IFoundPopulated } from '../../models/boardModel';
 import { Chats } from '../../models/chatModel';
 
 const router = Router();
@@ -80,12 +80,24 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
 }));
 
 router.get('/:id', expressAsyncHandler(async (req, res) => {
-  const result = await Founds.findById(req.params.id).populate('user', '-_id name serial type profileimage').lean();
+  const result: IFoundPopulated | null = await Founds.findById(req.params.id)
+    .populate('user', 'name serial type profileimage').lean();
   if (!result) return res.status(404).json({ message: 'Not Found' });
 
   return res.json({
     ...result,
-    chatRoomExist: !!await Chats.findOne({ from: req.auth.oid, ref: req.params.id }),
+    user: {
+      ...result.user,
+      _id: undefined,
+    },
+    chatRoomExist: !!await Chats.findOne({
+      $or: [
+        { from: req.auth.oid },
+        { to: req.auth.oid },
+      ],
+      ref: req.params.id,
+    }),
+    mine: req.auth.oid === result.user._id,
   });
 }));
 
