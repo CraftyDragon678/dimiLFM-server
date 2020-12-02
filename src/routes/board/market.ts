@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { Markets, IMarketPayload } from '../../models/boardModel';
+import { Markets, IMarketPayload, IMarketPopulated } from '../../models/boardModel';
+import { Chats } from '../../models/chatModel';
 
 const router = Router();
 
@@ -79,6 +80,42 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
       image: content.match(/src="(.*?)"/)?.[1],
     })),
   });
+}));
+
+router.get('/:id', expressAsyncHandler(async (req, res) => {
+  const result: IMarketPopulated | null = await Markets.findById(req.params.id)
+    .populate('user', 'name serial type profileimage').lean();
+  if (!result) return res.status(404).json({ message: 'Not Found' });
+
+  return res.json({
+    ...result,
+    user: {
+      ...result.user,
+      _id: undefined,
+    },
+    chatRoomExist: !!await Chats.findOne({
+      $or: [
+        { from: req.auth.oid },
+        { to: req.auth.oid },
+      ],
+      ref: req.params.id,
+    }),
+    mine: req.auth.oid === result.user._id,
+  });
+}));
+
+router.put('/:id/done', expressAsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const target = await Markets.findById(id);
+  if (!target) return res.status(404).json({ message: 'Not Found' });
+
+  await Markets.updateOne({ _id: id }, {
+    $set: {
+      done: !target.done,
+    },
+  });
+
+  return res.json({ done: !target.done });
 }));
 
 export default router;
