@@ -20,7 +20,7 @@ router.get('/', expressAsyncHandler(async (req, res) => {
     _id, messages, from, to, ref,
   }) => ({
     _id,
-    lastMessage: messages[0],
+    lastMessage: messages[0]?.message,
     title: ref.title,
     user: {
       ...from._id === req.auth.oid ? to : from,

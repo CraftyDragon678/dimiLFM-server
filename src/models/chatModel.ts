@@ -16,7 +16,11 @@ interface IChat extends Document {
   to: number | IUser;
   refBoardType: 'found' | 'lost' | 'market';
   ref: string | ObjectId | IFound | ILost | IMarket;
-  messages: string[];
+  messages: {
+    from: boolean;
+    type: string;
+    message: string;
+  }[];
 }
 
 export interface IChatPopulated extends IChat {
@@ -25,12 +29,18 @@ export interface IChatPopulated extends IChat {
   ref: IFound | ILost | IMarket;
 }
 
+const messageSchema = new Schema({
+  from: { type: Boolean, required: true },
+  type: { type: String, required: true },
+  message: { type: String, required: true },
+}, { timestamps: true });
+
 const chatSchema = new Schema({
   from: { type: Number, ref: 'user', required: true },
   to: { type: Number, ref: 'user', required: true },
   refBoardType: { type: String, enum: ['found', 'lost', 'market'], required: true },
   ref: { type: Types.ObjectId, refPath: 'refBoardType', required: true },
-  messages: { type: [String], default: [] },
+  messages: { type: [messageSchema], default: [] },
 }, { versionKey: false, timestamps: true });
 
 export const Chats = model<IChat>('chat', chatSchema);
