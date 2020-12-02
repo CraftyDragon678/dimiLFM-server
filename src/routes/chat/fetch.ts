@@ -9,7 +9,7 @@ router.get('/', expressAsyncHandler(async (req, res) => {
   const result: IChatPopulated | null = await Chats.findById(id)
     .populate('from', 'serial type name profileimage')
     .populate('to', 'serial type name profileimage')
-    .populate('ref', '-user -done -createdAt -updatedAt -tag')
+    .populate('ref', '-user -done -createdAt -updatedAt -tag -beforePrice')
     .select('-messages._id -messages.updatedAt')
     .lean();
 
@@ -27,7 +27,9 @@ router.get('/', expressAsyncHandler(async (req, res) => {
     })),
     ref: {
       ...result.ref,
+      board: result.refBoardType,
       content: result.ref.content.replace(/<[^>]*>/g, '').slice(0, 100),
+      image: result.ref.content.match(/src="(.*?)"/)?.[1],
     },
   });
 }));
