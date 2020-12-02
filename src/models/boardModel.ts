@@ -46,6 +46,18 @@ export interface IMarket extends IBoard, Document {
   stars: number;
 }
 
+export interface IFoundPopulated extends IFound {
+  user: IUser;
+}
+
+export interface ILostPopulated extends ILost {
+  user: IUser;
+}
+
+export interface IMarketPopulated extends IMarket {
+  user: IUser;
+}
+
 const foundSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
