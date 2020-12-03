@@ -20,7 +20,13 @@ router.get('/', expressAsyncHandler(async (req, res) => {
     _id, messages, from, to, ref,
   }) => ({
     _id,
-    lastMessage: messages[0]?.message,
+    lastMessage:
+      // eslint-disable-next-line no-nested-ternary
+      messages[0]
+        ? messages[0]?.type === 'text'
+          ? messages[0].message
+          : '(파일)'
+        : undefined,
     title: ref.title,
     user: {
       ...from._id === req.auth.oid ? to : from,
