@@ -1,6 +1,7 @@
 import { SocketEventHandler } from '.';
 import * as clients from '../clients';
 import { Chats } from '../../models/chatModel';
+import sendToChannel from '../send';
 
 export default {
   event: 'send',
@@ -24,23 +25,12 @@ export default {
         },
       });
 
-      clients.getAll((isFrom ? channel.to : channel.from) as number).forEach((socket) => {
-        socket.emit('message', {
-          type: msg.type,
-          channel: msg.channel,
-          message: msg.message,
-          date: new Date(),
-        });
-      });
-      clients.getAll((isFrom ? channel.from : channel.to) as number).forEach((socket) => {
-        if (socket === this) return;
-        socket.emit('message', {
-          mine: true,
-          type: msg.type,
-          channel: msg.channel,
-          message: msg.message,
-          date: new Date(),
-        });
+      sendToChannel({
+        me: (isFrom ? channel.from : channel.to) as number,
+        other: (isFrom ? channel.to : channel.from) as number,
+        channel: msg.channel,
+        message: msg.message,
+        type: msg.type,
       });
       this.emit('send', true);
     })();
