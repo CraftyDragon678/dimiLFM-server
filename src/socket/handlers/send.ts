@@ -25,7 +25,7 @@ export default {
         },
       });
 
-      sendToChannel({
+      sendToChannel.bind(this)({
         me: (isFrom ? channel.from : channel.to) as number,
         other: (isFrom ? channel.to : channel.from) as number,
         channel: msg.channel,

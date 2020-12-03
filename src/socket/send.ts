@@ -1,6 +1,7 @@
+import { Socket } from 'socket.io';
 import * as clients from './clients';
 
-const sendToChannel = ({
+function sendToChannel(this: Socket | undefined, {
   me, other, type, channel, message, date = new Date(),
 }: {
   me: number,
@@ -9,7 +10,7 @@ const sendToChannel = ({
   channel: string,
   message: string,
   date?: Date,
-}): void => {
+}): void {
   clients.getAll(other).forEach((socket) => {
     socket.emit('message', {
       type,
@@ -28,6 +29,6 @@ const sendToChannel = ({
       date,
     });
   });
-};
+}
 
 export default sendToChannel;

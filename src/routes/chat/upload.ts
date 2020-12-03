@@ -31,7 +31,7 @@ router.post('/',
         },
       },
     });
-    sendToChannel({
+    sendToChannel.bind(undefined)({
       me: (isFrom ? channel.from : channel.to) as number,
       other: (isFrom ? channel.to : channel.from) as number,
       channel: channel._id,
