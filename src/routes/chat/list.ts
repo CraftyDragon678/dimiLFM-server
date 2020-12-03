@@ -14,6 +14,7 @@ router.get('/', expressAsyncHandler(async (req, res) => {
     .populate('from', 'serial type name profileimage')
     .populate('to', 'serial type name profileimage')
     .populate('ref', 'title')
+    .sort('-updatedAt')
     .lean();
 
   return res.json(result.map(({
