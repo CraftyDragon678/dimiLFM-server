@@ -49,7 +49,11 @@ router.get('/', expressAsyncHandler(async (req, res) => {
     ...await Founds.aggregate(aggregate('found')),
     ...await Losts.aggregate(aggregate('lost')),
     ...await Markets.aggregate(aggregate('market')),
-  ]);
+  ].map((e) => ({
+    ...e,
+    image: e.content.match(/src="(.*?)"/)?.[1],
+    content: e.content.replace(/<[^>]*>/g, '').slice(0, 100),
+  })));
 }));
 
 export default router;
