@@ -1,14 +1,13 @@
 import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { Founds, Losts, Markets } from '../../models/boardModel';
+import { Founds, IFoundPopulated, ILostPopulated, IMarketPopulated, Losts, Markets } from '../../models/boardModel';
 
 const router = Router();
 
 router.get('/', expressAsyncHandler(async (req, res) => {
   const { query } = req.query;
   if (!query) return res.status(400).json({ message: 'give me the query' });
-
-  const regex = new RegExp(query.toString());
+  if (typeof query !== 'string') return res.status(400).json({ message: 'query must be string' });
 
   const aggregate = (board: string) => [
     {
@@ -17,22 +16,16 @@ router.get('/', expressAsyncHandler(async (req, res) => {
         let: { id: '$user' },
         pipeline: [
           { $match: { $expr: { $eq: ['$_id', '$$id'] } } },
-          { $project: { _id: 0, name: 1, serial: 1, type: 1 } },
+          {
+            $project: {
+              _id: 0, name: 1, serial: 1, type: 1,
+            },
+          },
         ],
         as: 'user',
       },
     },
     { $unwind: '$user' },
-    {
-      $match: {
-        $or: [
-          { title: regex },
-          { content: regex },
-          { tag: regex },
-          { 'user.name': regex },
-        ],
-      },
-    },
     {
       $project: {
         done: 1,
@@ -45,15 +38,22 @@ router.get('/', expressAsyncHandler(async (req, res) => {
     },
   ];
 
-  return res.json([
-    ...await Founds.aggregate(aggregate('found')),
-    ...await Losts.aggregate(aggregate('lost')),
-    ...await Markets.aggregate(aggregate('market')),
-  ].map((e) => ({
-    ...e,
-    image: e.content.match(/src="(.*?)"/)?.[1],
-    content: e.content.replace(/<[^>]*>/g, '').slice(0, 100),
-  })));
+  return res.json(
+    [
+      ...await Founds.aggregate(aggregate('found')) as IFoundPopulated[],
+      ...await Losts.aggregate(aggregate('lost')) as ILostPopulated[],
+      ...await Markets.aggregate(aggregate('market')) as IMarketPopulated[],
+    ].map((e) => ({
+      ...e,
+      image: e.content.match(/src="(.*?)"/)?.[1],
+      content: e.content.replace(/<[^>]*>/g, ''),
+    })).filter((e) => (
+      e.title.includes(query)
+        || e.content.includes(query)
+        || e.tag.includes(query)
+        || e.user.name.includes(query)
+    )),
+  );
 }));
 
 export default router;
