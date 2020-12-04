@@ -2,6 +2,7 @@ import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import { Books, Founds, Losts, Markets } from '../../models/boardModel';
 import { Chats } from '../../models/chatModel';
+import * as clients from '../../socket/clients';
 
 const router = Router();
 
@@ -43,6 +44,13 @@ router.post('/', expressAsyncHandler(async (req, res) => {
     ref: id,
     messages: [],
   });
+  clients.getAll(req.auth.oid).forEach((socket) => {
+    socket.emit('refresh');
+  });
+  clients.getAll(article.user as number).forEach((socket) => {
+    socket.emit('refresh');
+  });
+  // article.user
   return res.status(201).json({ _id: result.id, to: result.to });
 }));
 
