@@ -73,6 +73,10 @@ export interface IMarketPopulated extends IMarket {
   user: IUser;
 }
 
+export interface IBookPopulated extends IBook {
+  user: IUser;
+}
+
 const foundSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
