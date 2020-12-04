@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { Founds, Losts, Markets } from '../../models/boardModel';
+import { Books, Founds, Losts, Markets } from '../../models/boardModel';
 import { Chats } from '../../models/chatModel';
 
 const router = Router();
 
 interface OpenPayload {
   id: string;
-  board: 'found' | 'lost' | 'market';
+  board: 'found' | 'lost' | 'market' | 'book';
 }
 
 router.post('/', expressAsyncHandler(async (req, res) => {
@@ -17,9 +17,11 @@ router.post('/', expressAsyncHandler(async (req, res) => {
     ? await Founds.findById(id)
     : board === 'lost' // eslint-disable-line no-nested-ternary
       ? await Losts.findById(id)
-      : board === 'market'
+      : board === 'market' // eslint-disable-line no-nested-ternary
         ? await Markets.findById(id)
-        : null;
+        : board === 'book'
+          ? await Books.findById(id)
+          : null;
   if (!article) return res.status(404).json({ message: 'Not exist' });
   if (req.auth.oid === article.user) return res.status(400).json({ message: 'writer and user id must be different' });
 

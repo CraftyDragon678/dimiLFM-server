@@ -14,7 +14,7 @@ export interface IChatPayload {
 interface IChat extends Document {
   from: number | IUser;
   to: number | IUser;
-  refBoardType: 'found' | 'lost' | 'market';
+  refBoardType: 'found' | 'lost' | 'market' | 'book';
   ref: string | ObjectId | IFound | ILost | IMarket;
   messages: {
     from: boolean;
@@ -40,7 +40,7 @@ const messageSchema = new Schema({
 const chatSchema = new Schema({
   from: { type: Number, ref: 'user', required: true },
   to: { type: Number, ref: 'user', required: true },
-  refBoardType: { type: String, enum: ['found', 'lost', 'market'], required: true },
+  refBoardType: { type: String, enum: ['found', 'lost', 'market', 'book'], required: true },
   ref: { type: Types.ObjectId, refPath: 'refBoardType', required: true },
   messages: { type: [messageSchema], default: [] },
 }, { versionKey: false, timestamps: true });
