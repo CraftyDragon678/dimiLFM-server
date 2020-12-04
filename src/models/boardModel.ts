@@ -7,6 +7,8 @@ interface IBoard {
   tag: string;
   user: number | IUser;
   done: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IFoundPayload extends IBoard {

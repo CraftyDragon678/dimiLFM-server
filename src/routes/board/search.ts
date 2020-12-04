@@ -38,6 +38,7 @@ router.get('/', expressAsyncHandler(async (req, res) => {
         content: 1,
         tag: 1,
         user: 1,
+        createdAt: 1,
         board,
       },
     },
@@ -58,7 +59,7 @@ router.get('/', expressAsyncHandler(async (req, res) => {
         || e.content.includes(query)
         || e.tag.includes(query)
         || e.user.name.includes(query)
-    )),
+    )).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()),
   );
 }));
 
