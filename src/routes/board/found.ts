@@ -9,7 +9,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
   const { foundDate: [from, to], radioIndex, ...data }: IFoundPayload = req.body;
   if (!(radioIndex >= 0 && radioIndex <= 2 && Number.isInteger(radioIndex))) {
     return res.status(400).json({
-      message: 'radioIndex must be integer and greater than or 0 to zero and less than or equal to 2',
+      message: 'radioIndex must be integer and greater than or equal to zero and less than or equal to 2',
     });
   }
 
