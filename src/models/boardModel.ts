@@ -27,6 +27,13 @@ export interface IMarketPayload extends IBoard {
   stars: number;
 }
 
+export interface IBookPayload extends IBoard {
+  grade: number[];
+  subject?: string;
+  beforePrice: number;
+  afterPrice: number;
+}
+
 export interface IFound extends IBoard, Document {
   from: Date;
   to: Date;
@@ -45,6 +52,13 @@ export interface IMarket extends IBoard, Document {
   beforePrice: number;
   afterPrice: number;
   stars: number;
+}
+
+export interface IBook extends IBoard, Document {
+  grade: number[];
+  subject?: string;
+  beforePrice: number;
+  afterPrice: number;
 }
 
 export interface IFoundPopulated extends IFound {
@@ -94,6 +108,19 @@ const marketSchema = new Schema({
   user: { type: Number, ref: 'user' },
 }, { versionKey: false, timestamps: true });
 
+const bookSchema = new Schema({
+  title: { type: String, required: true },
+  content: { type: String, required: true },
+  grade: { type: [Number], required: true },
+  subject: { type: String },
+  beforePrice: { type: Number, required: true },
+  afterPrice: { type: Number, required: true },
+  done: { type: Boolean, default: false },
+  tag: { type: String, required: true },
+  user: { type: Number, ref: 'user' },
+}, { versionKey: false, timestamps: true });
+
 export const Founds = mongoose.model<IFound>('found', foundSchema);
 export const Losts = mongoose.model<ILost>('lost', lostSchema);
 export const Markets = mongoose.model<IMarket>('market', marketSchema);
+export const Books = mongoose.model<IBook>('book', bookSchema);
