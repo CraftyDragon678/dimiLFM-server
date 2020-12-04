@@ -1,6 +1,11 @@
 import { Router } from 'express';
 import expressAsyncHandler from 'express-async-handler';
-import { Founds, IFoundPopulated, ILostPopulated, IMarketPopulated, Losts, Markets } from '../../models/boardModel';
+import {
+  Founds, IFoundPopulated,
+  Losts, ILostPopulated,
+  Markets, IMarketPopulated,
+  Books, IBookPopulated,
+} from '../../models/boardModel';
 
 const router = Router();
 
@@ -43,6 +48,7 @@ router.get('/', expressAsyncHandler(async (req, res) => {
       ...await Founds.aggregate(aggregate('found')) as IFoundPopulated[],
       ...await Losts.aggregate(aggregate('lost')) as ILostPopulated[],
       ...await Markets.aggregate(aggregate('market')) as IMarketPopulated[],
+      ...await Books.aggregate(aggregate('book')) as IBookPopulated[],
     ].map((e) => ({
       ...e,
       image: e.content.match(/src="(.*?)"/)?.[1],
