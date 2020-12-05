@@ -27,11 +27,13 @@ const server = isHttps
       cert: fs.readFileSync(path.resolve(cert)),
       key: fs.readFileSync(path.resolve(key)),
     }, app).listen(webPort, () => {
+      // eslint-disable-next-line no-console
       console.log('WEB: HTTPS READY');
     })
   )
   : (
     http.createServer(app).listen(webPort, () => {
+      // eslint-disable-next-line no-console
       console.log('WEB: HTTP READY');
     })
   );
