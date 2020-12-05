@@ -7,12 +7,12 @@ const router = Router();
 
 router.post('/', expressAsyncHandler(async (req, res) => {
   const {
-    grade, beforePrice, afterPrice, ...data
+    grades, beforePrice, afterPrice, ...data
   }: IBookPayload = req.body;
 
-  if (!grade.every((e) => e >= 0 && e <= 3 && Number.isInteger(e))) {
+  if (!grades.every((e) => e >= 0 && e <= 3 && Number.isInteger(e))) {
     return res.status(400).json({
-      message: 'grade element must be integer and greater than or equal to zero and less than or equal to 3',
+      message: 'grades element must be integer and greater than or equal to zero and less than or equal to 3',
     });
   }
 
@@ -30,7 +30,7 @@ router.post('/', expressAsyncHandler(async (req, res) => {
 
   const result = await Books.create({
     ...data,
-    grade,
+    grades,
     beforePrice,
     afterPrice,
     user: req.auth.oid,

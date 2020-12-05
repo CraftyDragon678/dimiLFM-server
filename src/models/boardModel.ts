@@ -30,7 +30,7 @@ export interface IMarketPayload extends IBoard {
 }
 
 export interface IBookPayload extends IBoard {
-  grade: number[];
+  grades: number[];
   subject?: string;
   beforePrice: number;
   afterPrice: number;
@@ -57,7 +57,7 @@ export interface IMarket extends IBoard, Document {
 }
 
 export interface IBook extends IBoard, Document {
-  grade: number[];
+  grades: number[];
   subject?: string;
   beforePrice: number;
   afterPrice: number;
@@ -117,7 +117,7 @@ const marketSchema = new Schema({
 const bookSchema = new Schema({
   title: { type: String, required: true },
   content: { type: String, required: true },
-  grade: { type: [Number], required: true },
+  grades: { type: [Number], required: true },
   subject: { type: String },
   beforePrice: { type: Number, required: true },
   afterPrice: { type: Number, required: true },
