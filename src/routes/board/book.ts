@@ -46,6 +46,8 @@ interface SearchPayload {
     my: boolean;
   };
   tags: string[];
+  grades: number[];
+  subject: string;
   dates: Date[];
 }
 
@@ -55,8 +57,12 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
       done, notdone, old, my,
     },
     tags,
+    grades,
+    subject,
     dates,
   }: SearchPayload = req.body;
+
+  const isWithSubject = subject !== '전체' && subject !== '기타';
 
   const parsedDates = dates.map((e) => new Date(e));
 
@@ -70,12 +76,10 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
       },
       {
         tag: { $in: tags },
+        ...isWithSubject && { subject },
+        ...grades[0] !== 0 && { grades: { $in: grades }},
         ...my && { user: req.auth.oid },
-        $or: [
-          { createdAt: { $gte: parsedDates[0], $lte: parsedDates[1] } },
-          { from: { $lte: parsedDates[1] } },
-          { to: { $gte: parsedDates[0] } },
-        ],
+        createdAt: { $gte: parsedDates[0], $lte: parsedDates[1] },
       },
     ],
   }).sort({ createdAt: old ? 1 : -1 })
