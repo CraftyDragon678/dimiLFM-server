@@ -62,11 +62,7 @@ router.post('/search', expressAsyncHandler(async (req, res) => {
       {
         tag: { $in: tags },
         ...my && { user: req.auth.oid },
-        $or: [
-          { createdAt: { $gte: parsedDates[0], $lte: parsedDates[1] } },
-          { from: { $lte: parsedDates[1] } },
-          { to: { $gte: parsedDates[0] } },
-        ],
+        createdAt: { $gte: parsedDates[0], $lte: parsedDates[1] },
       },
     ],
   }).sort({ createdAt: old ? 1 : -1 })
