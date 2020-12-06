@@ -9,11 +9,11 @@ const needAuth = (req: Request, res: Response, next: NextFunction): void => {
       next();
     } catch (e) {
       if (e instanceof JsonWebTokenError || e instanceof TokenExpiredError ) {
-        res.status(401).send();
+        res.status(401).json({ message: 'token error' });
       }
     }
   } else {
-    res.status(401).send();
+    res.status(401).json({ message: 'need auth' });
   }
 };
 
