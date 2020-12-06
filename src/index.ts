@@ -5,15 +5,12 @@ import http from 'http';
 import https from 'https';
 import app from './app';
 import {
-  mongodb as mongoConf, webPort, isHttps, cert, key,
+  webPort, isHttps, cert, key,
 } from '../config.json';
 import io from './socket';
 
 mongoose.connect(
-  'mongodb://'
-    + `${mongoConf.name}:${encodeURIComponent(mongoConf.password)}`
-    + `@${mongoConf.host}:${mongoConf.port}`
-    + `/${mongoConf.db}?authSource=${mongoConf.authSource}`,
+  'mongodb://mongo/dimiLFM',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,

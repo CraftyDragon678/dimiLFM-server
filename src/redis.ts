@@ -1,6 +1,8 @@
 import redis from 'redis';
 
-const redisClient = redis.createClient();
+const redisClient = redis.createClient({
+  host: 'redis',
+});
 
 interface Hash {
   [key: string]: string | number;

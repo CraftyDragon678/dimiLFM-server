@@ -1,12 +1,4 @@
 {
-  "mongodb": {
-    "host": "",
-    "port": 27017,
-    "name": "",
-    "password": "",
-    "db": "",
-    "authSource": ""
-  },
   "jwtSecret": "",
   "webPort": 8080,
   "isHttps": false,
